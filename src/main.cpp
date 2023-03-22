@@ -8,8 +8,8 @@ int                 interval = 2000;
 unsigned long       lastDHTReadMillis = 0;
 float               humidity = 0;
 float               temperature = 0;
-char msg1[50] = {0x00};
-char msg2[50] = {0x00};
+char                msg1[10];
+char                msg2[10];
 
 SSD1306             display(0x3c, 4, 5, GEOMETRY_128_32);
 
@@ -23,8 +23,11 @@ void setup() {
   display.init();
   display.flipScreenVertically();
   display.setFont(ArialMT_Plain_16);
+
+  
   display.display();
   display.clear();
+  
 }
 
 void readDHT22() {
@@ -42,12 +45,15 @@ void loop() {
   readDHT22();
   sprintf(msg1, "%.1f", humidity);
   sprintf(msg2, "%.1f", temperature);
-  display.drawString(10, 10, String(humidity));
-  display.drawString(60, 10, String(temperature));
+
+  
+  display.drawString(10, 10, msg1);
+  display.drawString(60, 10, msg2);
   
   display.display();
   display.clear();
+  
 
-  Serial.printf("%.1f\t %.1f\n", temperature, humidity);
+  Serial.printf("%s\t %s\n", msg1, msg2);
   delay(1000);
 }
